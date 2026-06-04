@@ -2,19 +2,19 @@ import csv
 import re
 from datetime import datetime
 
-# As funções estão ordenadas pela ordem alfabética do nome para facilitar a localização
+# As funções estão ordenadas pelo nome em ordem alfabética para facilitar a localização
 
-
+# Função para relacionar valores únicos e seus números de ocorrências
 def contar_repetidos(lista, posicao):
-    contagem = {}
+    contagem = {} # dicionário vazio que vai receber pares de chave (a cada nova incidência) e valor (incrementado a cada nova ocorrência)
 
-    for linha in lista:
-        if linha[posicao] in contagem:
-            contagem[linha[posicao]]  += 1
+    for linha in lista: # percorre todas as linhas da lista
+        if linha[posicao] in contagem: # verifica se o valor da posição na linha está contido no dicionário
+            contagem[linha[posicao]]  += 1 # se estiver a quantidade é acrescentada em 1
         else:
-            contagem[linha[posicao]] = 1
+            contagem[linha[posicao]] = 1 # se não estiver é setada o valor inicial 1
 
-    ordenado = sorted(contagem.items(), key=lambda item: item[1], reverse=True)
+    ordenado = sorted(contagem.items(), key=lambda item: item[1], reverse=True) 
     for chave, valor in ordenado:
         print(f"> {repr(chave)} - {valor}")
 
@@ -158,6 +158,24 @@ def substituir(lista, posicao):
     return substituida
 
 
+def sumario_estatistico(lista, posicao, posicao2):
+    linhas_processadas = len(lista)
+    registros_corrigidos = 0
+    pedidos_cancelados = 0
+
+    for linha in lista:
+        if linha[posicao].lower().strip() != "":
+            registros_corrigidos += 1
+
+    for linha in lista:
+        if linha[posicao2].lower().strip() == "canceled":
+            pedidos_cancelados += 1
+       
+    print(f"> Contagem total de linhas processadas: {linhas_processadas}")
+    print(f"> Total de registros de data normalizados: {registros_corrigidos}")
+    print(f"> Total de pedidos cancelados identificados: {pedidos_cancelados}\n")
+
+
 def vazios_por_status(lista, posicao1, posicao2):
     #status = []
     contagem = {}
@@ -215,22 +233,7 @@ def verificar_invalidos(lista, posicao):
         print(f"> {repr(chave)}: {valor}")
 
 
-def sumario_estatistico(lista, posicao, posicao2):
-    linhas_processadas = len(lista)
-    registros_corrigidos = 0
-    pedidos_cancelados = 0
 
-    for linha in lista:
-        if linha[posicao].lower().strip() != "":
-            registros_corrigidos += 1
-
-    for linha in lista:
-        if linha[posicao2].lower().strip() == "canceled":
-            pedidos_cancelados += 1
-       
-    print(f"> Contagem total de linhas processadas: {linhas_processadas}")
-    print(f"> Total de registros de data normalizados: {registros_corrigidos}")
-    print(f"> Total de pedidos cancelados identificados: {pedidos_cancelados}\n")
 
 
 
