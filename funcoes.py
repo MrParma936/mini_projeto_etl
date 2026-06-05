@@ -31,24 +31,6 @@ def contar_repetidos(lista, posicao):
         print(f"> {repr(chave)} - {valor}") # exibe os resultados
 
 
-def filtrar_unicos(lista, posicao):
-    """
-    Exibe os valores únicos presentes em uma determinada posição das linhas da lista.
-
-    Parâmetros:
-        lista (list): Lista contendo os registros.
-        posicao (int): Índice da coluna a ser analisada.
-
-    Saída:
-        Exibe uma lista ordenada contendo apenas os valores distintos encontrados.
-    """ 
-    
-    # percorre todas as linhas da lista e extrai os valores da posição informada
-    categorias = sorted(set(linha[posicao] for linha in lista)) # set() remove valores repetidos e sorted() ordena os resultados em ordem alfabética
-
-    print(categorias) # exibe a lista de valores únicos encontrados
-
-
 def filtrar_nulos(lista, posicao):
     """
     Identifica e contabiliza valores nulos em uma coluna específica.
@@ -85,6 +67,24 @@ def filtrar_nulos(lista, posicao):
 
     for chave, valor in encontrados.items(): # percorre o dicionário
         print(f"> {repr(chave)}: {valor}") # exibe os resultados
+
+
+def filtrar_unicos(lista, posicao):
+    """
+    Exibe os valores únicos presentes em uma determinada posição das linhas da lista.
+
+    Parâmetros:
+        lista (list): Lista contendo os registros.
+        posicao (int): Índice da coluna a ser analisada.
+
+    Saída:
+        Exibe uma lista ordenada contendo apenas os valores distintos encontrados.
+    """ 
+    
+    # percorre todas as linhas da lista e extrai os valores da posição informada
+    categorias = sorted(set(linha[posicao] for linha in lista)) # set() remove valores repetidos e sorted() ordena os resultados em ordem alfabética
+
+    print(categorias) # exibe a lista de valores únicos encontrados
 
 
 def imprimir_pedidos(dicionario):
@@ -163,6 +163,30 @@ def informar_tamanho(lista):
 
     tamanho = len(lista) # obtém a quantidade de elementos da lista
     print(f">>>>>>>> O arquivo possui {tamanho} registros.\n") # exibe o total de registros encontrados
+
+
+def ler_arquivo(nome_arquivo):
+    """
+    Lê um arquivo CSV e armazena seus registros em uma lista.
+
+    A função utiliza csv.DictReader para converter cada linha do arquivo em um dicionário, utilizando os nomes das colunas como chaves.
+
+    Parâmetros:
+        nome_arquivo (str): Caminho ou nome do arquivo CSV.
+
+    Retorno:
+        list: Lista de dicionários contendo os registros do arquivo.
+    """
+
+    dados = [] # lista que armazenará todos os registros do arquivo
+
+    with open(nome_arquivo, encoding="utf-8") as arquivo: # abre o arquivo em modo leitura utilizando codificação UTF-8
+        leitor = csv.DictReader(arquivo) # cria um leitor que interpreta a primeira linha como cabeçalho e retorna cada registro como um dicionário
+
+        for linha in leitor: # percorre todas as linhas do arquivo
+            dados.append(linha) # adiciona cada registro à lista de dados
+
+    return dados # retorna a lista contendo todos os registros lidos
 
 
 def normalizar_data(lista, posicao):
@@ -255,30 +279,6 @@ def remover_linhas_invalidas(lista, colunas_numericas):
             lista_limpa.append(linha) # adiciona a linha à lista final
 
     return lista_limpa # retorna apenas os registros válidos
-
-
-def ler_arquivo(nome_arquivo):
-    """
-    Lê um arquivo CSV e armazena seus registros em uma lista.
-
-    A função utiliza csv.DictReader para converter cada linha do arquivo em um dicionário, utilizando os nomes das colunas como chaves.
-
-    Parâmetros:
-        nome_arquivo (str): Caminho ou nome do arquivo CSV.
-
-    Retorno:
-        list: Lista de dicionários contendo os registros do arquivo.
-    """
-
-    dados = [] # lista que armazenará todos os registros do arquivo
-
-    with open(nome_arquivo, encoding="utf-8") as arquivo: # abre o arquivo em modo leitura utilizando codificação UTF-8
-        leitor = csv.DictReader(arquivo) # cria um leitor que interpreta a primeira linha como cabeçalho e retorna cada registro como um dicionário
-
-        for linha in leitor: # percorre todas as linhas do arquivo
-            dados.append(linha) # adiciona cada registro à lista de dados
-
-    return dados # retorna a lista contendo todos os registros lidos
 
 
 def substituir(lista, posicao):
