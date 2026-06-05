@@ -1,10 +1,10 @@
 import funcoes
 
 # Criando uma lista de dicionários para armazenar o dataset de produtos
-df_products = funcoes.salvar_arquivo("olist_products_dataset.csv")
+df_products = funcoes.ler_arquivo("olist_products_dataset.csv")
 
 # Criando uma lista de dicionários para armazenar o dataset de pedidos
-df_orders = funcoes.salvar_arquivo("olist_orders_dataset.csv")
+df_orders = funcoes.ler_arquivo("olist_orders_dataset.csv")
 
 # Visualização em tela dos 5 primeiros registros do dataset de produtos
 print("\n>>>>>>>> Visualização dos primeiros registros do dataset de produtos:\n")
@@ -21,7 +21,7 @@ funcoes.contar_repetidos(df_products, "product_category_name")
 df_products_subst = funcoes.substituir(df_products, "product_category_name")
 
 # Nova visualização das categorias e número de ocorrências, agora sem valores vazios
-print("\n>>>>>>>> Campos nulos não foram encontrados, e os vazios foram preenchidos com a string 'Sem Categoria'\n")
+print("\n>>>>>>>> Campos nulos não foram encontrados, e os vazios foram preenchidos com a string 'Sem Categoria':\n")
 funcoes.contar_repetidos(df_products_subst, "product_category_name")
 
 # O grande número de ocorrência de valores únicos nas colunas de dimensões físicas, torna inviável a exibição como feita na coluna de categorias
@@ -40,7 +40,7 @@ funcoes.verificar_invalidos(df_products_subst, "product_width_cm")
 
 # Valores nulos não foram encontrados, apenas vazios, e devido a baixa incidência será feito o descarte desses registros
 # Tendo em vista que o preenchimento com média ou mediana pode trazer enviesamento, diante da baixa perda de registros o descarte se mostra a melhor opção
-df_products_sem_nulos = funcoes.remover_linhas_com_nulos(df_products_subst, ["product_weight_g", "product_length_cm", "product_height_cm", "product_width_cm"])
+df_products_sem_nulos = funcoes.remover_linhas_invalidas(df_products_subst, ["product_weight_g", "product_length_cm", "product_height_cm", "product_width_cm"])
 
 # Comparando o tamanho dos datasets antes e depois de remoção dos registros com valores nulos
 print("\n>>>>>>>> Comparação após opção pelo descarte dos registros com nulos: ")
@@ -55,8 +55,8 @@ print(f"> Após a remoção dos nulos o dataset tem {len_atual} registros.\n")
 # Limpando eventuais caracteres especiais ou pontuações indevidas
 df_products_sem_nulos = funcoes.normalizar_nomes(df_products_sem_nulos, "product_category_name")
 # Visualizando resultado após a normalização 
-print(">>>>>>>> Visualização dos valores na coluna product_category_name após aplicação de normalização nos nomes:\n")
-funcoes.filtrar(df_products_sem_nulos, "product_category_name")
+print(">>>>>>>> Visualização dos valores na coluna product_category_name após aplicação de normalização nos nomes, ordenados por ordem alfabética:\n")
+funcoes.filtrar_unicos(df_products_sem_nulos, "product_category_name")
 
 # Visualização em tela dos 5 primeiros registros do dataset de pedidos
 print("\n>>>>>>>> Visualização dos primeiros registros do dataset de pedidos:\n")
@@ -76,9 +76,9 @@ funcoes.contar_repetidos(df_orders, "order_status")
 
 # Refutada a hipótese levantada de que as datas estariam nulas devido ao status do pedido (order_status) constar como cancelado (canceled)
 # Dos 2.965 registros com datas vazias, apenas 619 estão associados ao status canceled
-print("\n>>>>>>>> Por esses números já fica claro que as datas de entrega vazias não tem relação com o status de pedido cancelado conforme a hipótese levantada")
+print("\n>>>>>>>> Por esses números já fica claro que as datas de entrega vazias não tem relação com o status de pedido cancelado conforme a hipótese levantada.")
 # Chamando função para exibir status e número de ocorrências nos registros sem data de entrega 
-print(">>>>>>>> O que fica evidenciado pela demonstração da relação dos 2.965 registros com os status, ordenados pelo número de ocorrências:\n")
+print(">>>>>>>> Dos 2.965 registros vazios, 619 estão relacionados ao status 'canceled' conforme a relação demonstrada abaixo, ordenada pelo número de ocorrências:\n")
 funcoes.vazios_por_status(df_orders, "order_delivered_customer_date", "order_status")
 
 # Os primeiros registros exibidos do dataset apresentam a coluna order_approved_at com o formato de data no padrão "%Y-%m-%d %H:%M:%S"
